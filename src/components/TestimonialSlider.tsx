@@ -16,7 +16,7 @@ const testimonials: Testimonial[] = [
     name: 'Sarah Johnson',
     role: 'Member for 2 years',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-    quote: 'Vertex Gym completely transformed my fitness journey. The trainers are exceptional and the community is so supportive. I've lost 30 pounds and gained so much confidence!',
+    quote: "Vertex Gym completely transformed my fitness journey. The trainers are exceptional and the community is so supportive. I've lost 30 pounds and gained so much confidence!",
   },
   {
     id: 2,
@@ -30,7 +30,7 @@ const testimonials: Testimonial[] = [
     name: 'Emma Rodriguez',
     role: 'Member for 3 years',
     image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
-    quote: 'The personal training at Vertex Gym is worth every penny. My trainer customized workouts specifically for my goals, and I've seen incredible progress in strength and endurance.',
+    quote: "The personal training at Vertex Gym is worth every penny. My trainer customized workouts specifically for my goals, and I've seen incredible progress in strength and endurance.",
   },
 ];
 
