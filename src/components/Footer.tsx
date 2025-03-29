@@ -120,11 +120,11 @@ const Footer = () => {
             <ul className="space-y-4 text-gray-400">
               <li className="flex items-start space-x-3">
                 <MapPin size={20} className="text-goldenYellow flex-shrink-0 mt-1" />
-                <span>123 Fitness Street, Workout City, WC 12345</span>
+                <span>123 Dabokpa Road, Tamale, Ghana</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone size={20} className="text-goldenYellow flex-shrink-0" />
-                <span>+1 (555) 123-4567</span>
+                <span>+233 53 343 4741</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail size={20} className="text-goldenYellow flex-shrink-0" />

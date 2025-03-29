@@ -4,46 +4,57 @@ import { useToast } from "@/hooks/use-toast";
 
 const ContactForm: React.FC = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-    interest: 'General Inquiry'
-  });
+  const [result, setResult] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsSubmitting(true);
+    setResult("Sending....");
     
-    // Simulate form submission
-    setTimeout(() => {
+    const formData = new FormData(event.currentTarget);
+    // Replace with your actual Web3Forms access key
+    formData.append("access_key", "YOUR_ACCESS_KEY_HERE");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setResult("Form Submitted Successfully");
+        event.currentTarget.reset();
+        toast({
+          title: "Message sent!",
+          description: "We'll get back to you as soon as possible.",
+        });
+      } else {
+        console.log("Error", data);
+        setResult(data.message);
+        toast({
+          title: "Error",
+          description: data.message || "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setResult("Something went wrong. Please try again.");
       toast({
-        title: "Message sent!",
-        description: "We'll get back to you as soon as possible.",
+        title: "Error",
+        description: "Failed to submit the form. Please try again.",
+        variant: "destructive",
       });
+    } finally {
       setIsSubmitting(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        message: '',
-        interest: 'General Inquiry'
-      });
-    }, 1500);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
+    <form onSubmit={onSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -53,8 +64,6 @@ const ContactForm: React.FC = () => {
             type="text"
             id="name"
             name="name"
-            value={formData.name}
-            onChange={handleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
             placeholder="Your full name"
@@ -68,8 +77,6 @@ const ContactForm: React.FC = () => {
             type="email"
             id="email"
             name="email"
-            value={formData.email}
-            onChange={handleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
             placeholder="Your email address"
@@ -83,8 +90,6 @@ const ContactForm: React.FC = () => {
             type="tel"
             id="phone"
             name="phone"
-            value={formData.phone}
-            onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
             placeholder="Your phone number"
           />
@@ -96,8 +101,6 @@ const ContactForm: React.FC = () => {
           <select
             id="interest"
             name="interest"
-            value={formData.interest}
-            onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
           >
             <option value="General Inquiry">General Inquiry</option>
@@ -115,14 +118,16 @@ const ContactForm: React.FC = () => {
         <textarea
           id="message"
           name="message"
-          value={formData.message}
-          onChange={handleChange}
           required
           rows={4}
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal"
           placeholder="Tell us how we can help you..."
         ></textarea>
       </div>
+      
+      {/* Hidden honeypot field to prevent spam */}
+      <input type="hidden" name="botcheck" style={{ display: 'none' }} />
+      
       <button
         type="submit"
         disabled={isSubmitting}
@@ -156,6 +161,12 @@ const ContactForm: React.FC = () => {
           'Send Message'
         )}
       </button>
+      
+      {result && (
+        <div className={`text-center mt-2 ${result.includes("Error") ? "text-red-500" : "text-green-500"}`}>
+          {result}
+        </div>
+      )}
     </form>
   );
 };
