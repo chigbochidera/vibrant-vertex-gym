@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Check } from 'lucide-react'; // Added this import
 import AnimateOnScroll from '@/components/AnimateOnScroll';
 import TrainerCard from '@/components/TrainerCard';
 import Layout from '@/components/Layout';
